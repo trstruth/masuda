@@ -19,6 +19,16 @@ impl LinearCongruential {
         }
     }
 
+    /// Setter for seed attribute
+    pub fn set_seed(&mut self, seed: u32) {
+        self.seed = seed
+    }
+
+    /// Step advances the rng by calling next_u32 and discarding result
+    pub fn step(&mut self) {
+        self.next_u32();
+    }
+
     /// Advances the rng, outputting a new u32 and setting the seed of the instance
     pub fn next_u32(&mut self) -> u32 {
         let result = (self.seed as u64 * self.multiplier as u64) + self.increment as u64;
@@ -50,32 +60,47 @@ impl LinearCongruential {
 
     /// Four RNG calls are made, two to generate the PID and two to generate the IVs. It can be illustrated as [PID] [PID] [IVs] [IVs].
     pub fn method_1(&mut self) -> Pokemon {
+        let og_seed = self.seed;
+
         let pid = self.generate_pid();
         let n1 = self.next_u16();
         let n2 = self.next_u16();
         let ivs = IndividualValues::new_from_numbers(n1, n2);
+
+        self.set_seed(og_seed);
+        self.step();
 
         Pokemon::new(pid, ivs)
     }
 
     /// Five RNG calls are made. The first two are used to generate the PID and the last two are used to generate the IVs. The third RNG call is not used for anything. It can be illustrated as [PID] [PID] [xxxx] [IVs] [IVs].
     pub fn method_2(&mut self) -> Pokemon {
+        let og_seed = self.seed;
+
         let pid = self.generate_pid();
         self.next_u16();
         let n1 = self.next_u16();
         let n2 = self.next_u16();
         let ivs = IndividualValues::new_from_numbers(n1, n2);
+
+        self.set_seed(og_seed);
+        self.step();
 
         Pokemon::new(pid, ivs)
     }
 
     /// Five RNG calls are made. The first and second are used to generate the PID and the third and fifth are used to generate the IVs. The fourth RNG call is not used for anything. It can be illustrated as [PID] [PID] [IVs] [xxxx] [IVs].
     pub fn method_4(&mut self) -> Pokemon {
+        let og_seed = self.seed;
+
         let pid = self.generate_pid();
         let n1 = self.next_u16();
         self.next_u16();
         let n2 = self.next_u16();
         let ivs = IndividualValues::new_from_numbers(n1, n2);
+
+        self.set_seed(og_seed);
+        self.step();
 
         Pokemon::new(pid, ivs)
     }
