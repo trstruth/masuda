@@ -175,4 +175,23 @@ mod tests {
         assert_eq!(generated_pokemon.get_gender_50_f(), Gender::Female);
         Ok(())
     }
+
+    #[test]
+    fn test_generate_method_1_frame_sequence() -> Result<(), String> {
+        let mut lcrng = LinearCongruential::new(0);
+
+        let expected_pid_sequence: [u32; 5] = [
+            0xe97e0000u32,
+            0x5271e97eu32,
+            0x31b05271u32,
+            0x8e4231b0u32,
+            0xe2cc8e42u32,
+        ];
+
+        for expected_pid in expected_pid_sequence.iter() {
+            assert_eq!(*expected_pid, lcrng.method_1().pid);
+        }
+
+        Ok(())
+    }
 }
