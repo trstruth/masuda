@@ -60,4 +60,54 @@ impl Pokemon {
         }
         Gender::Male
     }
+
+    // shininess is determined by the process described here:
+    // https://www.smogon.com/ingame/rng/pid_iv_creation#how_shiny
+    pub fn get_shininess(&self, tid: u32, sid: u32) -> bool {
+        let hid = self.pid >> 16; // 16 highest bits
+        let lid = self.pid & 65535; // 16 lowest bits
+
+        for bit_idx in (3..16).rev() {
+            let hid_bit = (hid >> bit_idx) & 1;
+            let lid_bit = (lid >> bit_idx) & 1;
+            let tid_bit = (tid >> bit_idx) & 1;
+            let sid_bit = (sid >> bit_idx) & 1;
+
+            if (hid_bit + lid_bit + tid_bit + sid_bit) % 2 != 0 {
+                return false
+            }
+        }
+        true
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_shininess_true() -> Result<(), String> {
+        let pid = 0xB58F0B2Au32;
+        let ivs = IndividualValues::new(0, 0, 0, 0, 0, 0);
+        let p = Pokemon::new(pid, ivs);
+
+        let tid = 0xA918u32;
+        let sid = 0x17BBu32;
+
+        assert_eq!(p.get_shininess(tid, sid), true);
+        Ok(())
+    }
+
+    #[test]
+    fn test_shininess_false() -> Result<(), String> {
+        let pid = 0xC58F0B2Au32;
+        let ivs = IndividualValues::new(0, 0, 0, 0, 0, 0);
+        let p = Pokemon::new(pid, ivs);
+
+        let tid = 0xA918u32;
+        let sid = 0x17BBu32;
+
+        assert_eq!(p.get_shininess(tid, sid), false);
+        Ok(())
+    }
 }
