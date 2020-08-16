@@ -63,9 +63,9 @@ impl Pokemon {
 
     // shininess is determined by the process described here:
     // https://www.smogon.com/ingame/rng/pid_iv_creation#how_shiny
-    pub fn get_shininess(&self, tid: u32, sid: u32) -> bool {
-        let hid = self.pid >> 16; // 16 highest bits
-        let lid = self.pid & 65535; // 16 lowest bits
+    pub fn get_shininess(&self, tid: u16, sid: u16) -> bool {
+        let hid = (self.pid >> 16) as u16; // 16 highest bits
+        let lid = (self.pid & 65535) as u16; // 16 lowest bits
 
         for bit_idx in (3..16).rev() {
             let hid_bit = (hid >> bit_idx) & 1;
@@ -91,8 +91,8 @@ mod tests {
         let ivs = IndividualValues::new(0, 0, 0, 0, 0, 0);
         let p = Pokemon::new(pid, ivs);
 
-        let tid = 0xA918u32;
-        let sid = 0x17BBu32;
+        let tid = 0xA918u16;
+        let sid = 0x17BBu16;
 
         assert_eq!(p.get_shininess(tid, sid), true);
         Ok(())
@@ -104,8 +104,8 @@ mod tests {
         let ivs = IndividualValues::new(0, 0, 0, 0, 0, 0);
         let p = Pokemon::new(pid, ivs);
 
-        let tid = 0xA918u32;
-        let sid = 0x17BBu32;
+        let tid = 0xA918u16;
+        let sid = 0x17BBu16;
 
         assert_eq!(p.get_shininess(tid, sid), false);
         Ok(())
