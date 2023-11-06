@@ -1,3 +1,5 @@
+use std::fmt;
+
 pub static NATURES: [Nature; 25] = [
     Nature::Hardy,
     Nature::Lonely,
@@ -26,7 +28,7 @@ pub static NATURES: [Nature; 25] = [
     Nature::Quirky,
 ];
 
-#[derive(Copy, Clone, Debug, PartialEq)]
+#[derive(Copy, Clone, Debug, Eq, Hash, PartialEq)]
 pub enum Nature {
     Hardy = 0,
     Lonely = 1,
@@ -53,4 +55,36 @@ pub enum Nature {
     Sassy = 22,
     Careful = 23,
     Quirky = 24,
+}
+
+impl fmt::Display for Nature {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            Nature::Hardy => write!(f, "Hardy"),
+            Nature::Lonely => write!(f, "Lonely"),
+            Nature::Brave => write!(f, "Brave"),
+            Nature::Adamant => write!(f, "Adamant"),
+            Nature::Naughty => write!(f, "Naughty"),
+            Nature::Bold => write!(f, "Bold"),
+            Nature::Docile => write!(f, "Docile"),
+            Nature::Relaxed => write!(f, "Relaxed"),
+            Nature::Impish => write!(f, "Impish"),
+            Nature::Lax => write!(f, "Lax"),
+            Nature::Timid => write!(f, "Timid"),
+            Nature::Hasty => write!(f, "Hasty"),
+            Nature::Serious => write!(f, "Serious"),
+            Nature::Jolly => write!(f, "Jolly"),
+            Nature::Naive => write!(f, "Naive"),
+            Nature::Modest => write!(f, "Modest"),
+            Nature::Mild => write!(f, "Mild"),
+            Nature::Quiet => write!(f, "Quiet"),
+            Nature::Bashful => write!(f, "Bashful"),
+            Nature::Rash => write!(f, "Rash"),
+            Nature::Calm => write!(f, "Calm"),
+            Nature::Gentle => write!(f, "Gentle"),
+            Nature::Sassy => write!(f, "Sassy"),
+            Nature::Careful => write!(f, "Careful"),
+            Nature::Quirky => write!(f, "Quirky"),
+        }
+    }
 }

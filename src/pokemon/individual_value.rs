@@ -12,7 +12,7 @@ pub struct IndividualValues {
 
 impl IndividualValues {
     pub fn new(hp: u8, atk: u8, def: u8, spa: u8, spd: u8, spe: u8) -> Self {
-        IndividualValues{
+        IndividualValues {
             hp: hp,
             atk: atk,
             def: def,
@@ -53,7 +53,7 @@ impl IndividualValues {
         let spa = ((n2 & 0x3E0u16) >> 5) as u8;
         let spd = ((n2 & 0x7C00u16) >> 10) as u8;
 
-        IndividualValues{
+        IndividualValues {
             hp: hp,
             atk: atk,
             def: def,
@@ -66,6 +66,10 @@ impl IndividualValues {
 
 impl fmt::Debug for IndividualValues {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{}/{}/{}/{}/{}/{}", self.hp, self.atk, self.def, self.spa, self.spd, self.spe)
+        write!(
+            f,
+            "{}/{}/{}/{}/{}/{}",
+            self.hp, self.atk, self.def, self.spa, self.spd, self.spe
+        )
     }
 }
