@@ -19,20 +19,23 @@ Try running the examples to see it in action
 
 `cargo run --example ten_frames` generates 10 frames and the pokemon generated on those frames
 
-`cargo run --example is_shiny` finds the 3 earliest shiny frames and displays them
+`cargo run --example is_shiny` finds the shiny frames in the first 100000 frames for the given tid/sid and displays them
 
 most usages of this lib will probably look something like this:
 ```rust
-use masuda::generators::LinearCongruential;
+// create an searcher instance with game, method, and max frames
+let mut searcher = Searcher::new(Game::Emerald, Method::One, 1000000);
+// create a profile with a tid and an sid
+let profile = Profile::new(10101, 12345);
+// create a filter for the attributes you care about
+// in this example, let's look for a 31/31/x/x/x/31 Jolly spread
+let filter = Filter::new(&profile)
+        .with_stat(StatFilter::HP(StatComparison::EqualTo(31)))
+        .with_stat(StatFilter::Attack(StatComparison::EqualTo(31)))
+        .with_stat(StatFilter::Speed(StatComparison::EqualTo(31)))
+        .with_nature(Nature::Jolly); 
 
-...
-
-// create an lcrng instance, pass a seed to the constructor
-// in pokemon emerald, inital seed is always 0
-// this variable needs to be `mut` because the rng stores some internal state
-let mut rng = LinearCongruential::new(0);
-
-// generate a pokemon using method 1
-// each call to these methods advance the rng by one frame.
-rng.method_1();
+for result in searcher.search(Some(Filter)) {
+    println("{:?}", result);
+}
 ```
