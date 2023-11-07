@@ -1,5 +1,6 @@
 use std::convert::TryFrom;
 
+use crate::generators::Generator;
 use crate::pokemon::{IndividualValues, Pokemon};
 
 /// Represents a linear congruential generator https://en.wikipedia.org/wiki/Linear_congruential_generator
@@ -57,9 +58,11 @@ impl LinearCongruential {
 
         pid
     }
+}
 
+impl Generator for LinearCongruential {
     /// Four RNG calls are made, two to generate the PID and two to generate the IVs. It can be illustrated as [PID] [PID] [IVs] [IVs].
-    pub fn method_1(&mut self) -> Pokemon {
+    fn method_1(&mut self) -> Pokemon {
         let og_seed = self.seed;
 
         let pid = self.generate_pid();
@@ -74,7 +77,7 @@ impl LinearCongruential {
     }
 
     /// Five RNG calls are made. The first two are used to generate the PID and the last two are used to generate the IVs. The third RNG call is not used for anything. It can be illustrated as [PID] [PID] [xxxx] [IVs] [IVs].
-    pub fn method_2(&mut self) -> Pokemon {
+    fn method_2(&mut self) -> Pokemon {
         let og_seed = self.seed;
 
         let pid = self.generate_pid();
@@ -90,7 +93,7 @@ impl LinearCongruential {
     }
 
     /// Five RNG calls are made. The first and second are used to generate the PID and the third and fifth are used to generate the IVs. The fourth RNG call is not used for anything. It can be illustrated as [PID] [PID] [IVs] [xxxx] [IVs].
-    pub fn method_4(&mut self) -> Pokemon {
+    fn method_4(&mut self) -> Pokemon {
         let og_seed = self.seed;
 
         let pid = self.generate_pid();
@@ -139,12 +142,7 @@ mod tests {
     fn test_lcrng_next_16_sequence() -> Result<(), String> {
         let mut lcrng = LinearCongruential::new(0x1A56B091u32);
         let expected_numbers: [u16; 6] = [
-            0x01DBu16,
-            0x7B06u16,
-            0x5233u16,
-            0xE470u16,
-            0x5CC4u16,
-            0x36BBu16,
+            0x01DBu16, 0x7B06u16, 0x5233u16, 0xE470u16, 0x5CC4u16, 0x36BBu16,
         ];
 
         for expected_number in expected_numbers.iter() {
@@ -169,7 +167,10 @@ mod tests {
         let generated_pokemon = lcrng.method_2();
 
         assert_eq!(generated_pokemon.pid, 2118657873);
-        assert_eq!(generated_pokemon.ivs, IndividualValues::new(28, 20, 24, 23, 23, 9));
+        assert_eq!(
+            generated_pokemon.ivs,
+            IndividualValues::new(28, 20, 24, 23, 23, 9)
+        );
         assert_eq!(generated_pokemon.get_nature(), Nature::Careful);
         assert_eq!(generated_pokemon.get_ability(), 1);
         assert_eq!(generated_pokemon.get_gender_50_f(), Gender::Female);

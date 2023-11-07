@@ -1,8 +1,9 @@
+use std::fmt;
+
 use std::convert::TryFrom;
 
 use crate::pokemon::{Gender, IndividualValues, Nature, NATURES};
 
-#[derive(Debug)]
 pub struct Pokemon {
     pub pid: u32,
     pub ivs: IndividualValues,
@@ -10,10 +11,7 @@ pub struct Pokemon {
 
 impl Pokemon {
     pub fn new(pid: u32, ivs: IndividualValues) -> Self {
-        Pokemon{
-            pid: pid,
-            ivs: ivs,
-        }
+        Pokemon { pid: pid, ivs: ivs }
     }
 
     /// Ability of a pokemon by determined by the last bit of its pid
@@ -26,7 +24,7 @@ impl Pokemon {
     pub fn get_nature(&self) -> Nature {
         NATURES[((self.pid % 100) % 25) as usize]
     }
-    
+
     /// Gender of a pokemon is determined by the last bytes of the PID.
     /// A byte can express values between 0-255 inclusive, and the various gender ratios dictate the cutoffs.
     pub fn get_gender_number(&self) -> u8 {
@@ -74,10 +72,16 @@ impl Pokemon {
             let sid_bit = (sid >> bit_idx) & 1;
 
             if (hid_bit + lid_bit + tid_bit + sid_bit) % 2 != 0 {
-                return false
+                return false;
             }
         }
         true
+    }
+}
+
+impl fmt::Debug for Pokemon {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{:x} {} {:?}", self.pid, self.get_nature(), self.ivs)
     }
 }
 
