@@ -11,7 +11,7 @@ pub struct Pokemon {
 
 impl Pokemon {
     pub fn new(pid: u32, ivs: IndividualValues) -> Self {
-        Pokemon { pid: pid, ivs: ivs }
+        Pokemon { pid, ivs }
     }
 
     /// Ability of a pokemon by determined by the last bit of its pid
@@ -98,7 +98,7 @@ mod tests {
         let tid = 0xA918u16;
         let sid = 0x17BBu16;
 
-        assert_eq!(p.get_shininess(tid, sid), true);
+        assert!(p.get_shininess(tid, sid));
         Ok(())
     }
 
@@ -111,7 +111,7 @@ mod tests {
         let tid = 0xA918u16;
         let sid = 0x17BBu16;
 
-        assert_eq!(p.get_shininess(tid, sid), false);
+        assert!(!p.get_shininess(tid, sid));
         Ok(())
     }
 }

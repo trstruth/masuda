@@ -15,8 +15,8 @@ impl Filter {
     pub fn new(profile: &Profile) -> Self {
         Self {
             shiny: false,
-            tid: profile.tid.clone(),
-            sid: profile.sid.clone(),
+            tid: profile.tid,
+            sid: profile.sid,
             stat_filters: StatFilters::new(),
             nature_filter: NatureFilter::Any,
         }
@@ -71,7 +71,7 @@ impl NatureFilter {
     fn matches(&self, nature: &Nature) -> bool {
         match self {
             NatureFilter::Any => true,
-            NatureFilter::Natures(natures) => natures.contains(&nature),
+            NatureFilter::Natures(natures) => natures.contains(nature),
         }
     }
 }

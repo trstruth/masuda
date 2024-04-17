@@ -13,12 +13,12 @@ pub struct IndividualValues {
 impl IndividualValues {
     pub fn new(hp: u8, atk: u8, def: u8, spa: u8, spd: u8, spe: u8) -> Self {
         IndividualValues {
-            hp: hp,
-            atk: atk,
-            def: def,
-            spa: spa,
-            spd: spd,
-            spe: spe,
+            hp,
+            atk,
+            def,
+            spa,
+            spd,
+            spe,
         }
     }
 
@@ -54,12 +54,12 @@ impl IndividualValues {
         let spd = ((n2 & 0x7C00u16) >> 10) as u8;
 
         IndividualValues {
-            hp: hp,
-            atk: atk,
-            def: def,
-            spa: spa,
-            spd: spd,
-            spe: spe,
+            hp,
+            atk,
+            def,
+            spa,
+            spd,
+            spe,
         }
     }
 }
