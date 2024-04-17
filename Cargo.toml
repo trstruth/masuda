@@ -3,6 +3,8 @@ name = "masuda"
 version = "0.1.0"
 authors = ["Tristan <tristan.struthers@mail.mcgill.ca>"]
 edition = "2021"
+license = "MIT"
+description = "pokemon rng functionality written in rust"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
