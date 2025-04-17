@@ -1,4 +1,9 @@
+# rust
 /target
 Cargo.lock
 
+# yew
+/dist
+
+# macOS
 .DS_Store

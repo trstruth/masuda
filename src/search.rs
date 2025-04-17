@@ -50,6 +50,7 @@ impl Searcher {
     }
 }
 
+#[derive(PartialEq, Clone)]
 pub struct SearchResult {
     pub pokemon: Pokemon,
     pub frame: usize,

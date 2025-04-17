@@ -4,6 +4,7 @@ use std::convert::TryFrom;
 
 use crate::pokemon::{Gender, IndividualValues, Nature, NATURES};
 
+#[derive(PartialEq, Clone)]
 pub struct Pokemon {
     pub pid: u32,
     pub ivs: IndividualValues,

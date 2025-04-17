@@ -46,6 +46,14 @@ impl Filter {
         self
     }
 
+    pub fn with_natures(mut self, natures: Vec<Nature>) -> Self {
+        for nature in natures {
+            self = self.with_nature(nature)
+        }
+
+        self
+    }
+
     pub fn matches(&self, p: &Pokemon) -> bool {
         if !self.stat_filters.matches(&p.ivs) {
             return false;
@@ -118,6 +126,7 @@ impl StatFilters {
     }
 }
 
+#[derive(Copy, Clone)]
 pub enum StatFilter {
     HP(StatComparison),
     Attack(StatComparison),
@@ -140,6 +149,7 @@ impl StatFilter {
     }
 }
 
+#[derive(Copy, Clone, PartialEq)]
 pub enum StatComparison {
     Any,
     EqualTo(u8),

@@ -12,6 +12,8 @@ description = "pokemon rng functionality written in rust"
 criterion = "0.3"
 
 [dependencies]
+yew = { version = "0.21.0", features = ["csr"] }
+web-sys = { version = "0.3.77", features = ["HtmlSelectElement", "HtmlInputElement"] }
 
 [[bench]]
 name = "masuda_benchmark"
