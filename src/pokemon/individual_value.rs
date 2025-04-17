@@ -1,6 +1,6 @@
 use std::fmt;
 
-#[derive(PartialEq)]
+#[derive(PartialEq, Default)]
 pub struct IndividualValues {
     pub hp: u8,
     pub atk: u8,
